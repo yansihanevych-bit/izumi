@@ -1,0 +1,522 @@
+@import "tailwindcss";
+@import "@fontsource-variable/cormorant/wght.css";
+@import "@fontsource-variable/cormorant/wght-italic.css";
+@import "@fontsource-variable/onest/wght.css";
+
+/*
+ * IZUMI design tokens.
+ * Base colours follow the brief (ivory/cream, dark brown, charcoal, buckwheat,
+ * sage). The action colour is the mountain teal of the Ginger box and the
+ * product panels take the colour of their own packaging, so colour carries
+ * meaning: blush = Classic, teal = Ginger, sand = sets.
+ */
+@theme {
+  --color-paper: #f3ede3;
+  --color-husk: #e6d9c4;
+  --color-roast: #33241a;
+  --color-ink: #1f1b17;
+  --color-grain: #9c6b3c;
+  --color-spring: #1e4d50;
+  --color-spring-deep: #163a3c;
+  --color-blush: #ebd3c6;
+  --color-tealtint: #d3e0dc;
+  --color-sand: #eadcc4;
+  --color-sage: #7d8a73;
+  --color-line: rgb(51 36 26 / 0.16);
+  --color-muted: #6b5a4c;
+
+  --font-serif: "Cormorant Variable", "Cormorant", Georgia, serif;
+  --font-sans: "Onest Variable", "Onest", system-ui, sans-serif;
+
+  --text-display: clamp(5rem, 19vw, 17rem);
+  --text-h1: clamp(2.75rem, 6.2vw, 5.5rem);
+  --text-h2: clamp(2.25rem, 4.4vw, 3.9rem);
+  --text-h3: clamp(1.6rem, 2.2vw, 2.1rem);
+  --text-lead: clamp(1.125rem, 1.4vw, 1.3rem);
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-roast);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    font-feature-settings: "ss01";
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-spring);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  ::selection {
+    background: var(--color-blush);
+    color: var(--color-roast);
+  }
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 88rem;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 3rem);
+  }
+  .measure {
+    max-width: 38rem;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.75rem 1.6rem;
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.2;
+    transition:
+      background-color 0.25s var(--ease-out-quint),
+      color 0.25s var(--ease-out-quint),
+      border-color 0.25s var(--ease-out-quint);
+  }
+  .btn-primary {
+    background: var(--color-spring);
+    color: var(--color-paper);
+  }
+  .btn-primary:hover {
+    background: var(--color-spring-deep);
+  }
+  .btn-primary:disabled {
+    background: var(--color-muted);
+    cursor: not-allowed;
+  }
+  .btn-quiet {
+    border: 1px solid var(--color-line);
+    color: var(--color-roast);
+  }
+  .btn-quiet:hover {
+    border-color: var(--color-roast);
+  }
+  .link {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+    transition: text-decoration-color 0.2s;
+  }
+  .link:hover {
+    text-decoration-color: currentColor;
+  }
+  .tone-blush {
+    background: var(--color-blush);
+  }
+  .tone-teal {
+    background: var(--color-tealtint);
+  }
+  .tone-sand {
+    background: var(--color-sand);
+  }
+  /* Packshots on a white background blend into the tinted panels. */
+  .blend {
+    mix-blend-mode: multiply;
+  }
+  .field {
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.9375rem;
+  }
+  .field input,
+  .field select {
+    min-height: 3rem;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--color-line);
+    border-radius: 0.75rem;
+    background: rgb(255 255 255 / 0.55);
+    color: var(--color-roast);
+    font: inherit;
+  }
+  .field input:focus,
+  .field select:focus {
+    border-color: var(--color-spring);
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(30 77 80 / 0.15);
+  }
+}
+
+
+/* Drawers on native <dialog>: slide in from the right (desktop) or bottom (mobile). */
+.cart-drawer,
+.menu-sheet {
+  transition:
+    translate 0.45s var(--ease-out-quint),
+    overlay 0.45s allow-discrete,
+    display 0.45s allow-discrete;
+}
+.cart-drawer {
+  translate: 100% 0;
+}
+.cart-drawer[open] {
+  translate: 0 0;
+}
+@starting-style {
+  .cart-drawer[open] {
+    translate: 100% 0;
+  }
+}
+.menu-sheet {
+  translate: 0 -2%;
+  opacity: 0;
+  transition-property: translate, opacity, overlay, display;
+}
+.menu-sheet[open] {
+  translate: 0 0;
+  opacity: 1;
+}
+@starting-style {
+  .menu-sheet[open] {
+    translate: 0 -2%;
+    opacity: 0;
+  }
+}
+dialog::backdrop {
+  transition:
+    background-color 0.45s,
+    overlay 0.45s allow-discrete,
+    display 0.45s allow-discrete;
+}
+@media (max-width: 639px) {
+  .cart-drawer {
+    translate: 0 100%;
+  }
+  .cart-drawer[open] {
+    translate: 0 0;
+  }
+  @starting-style {
+    .cart-drawer[open] {
+      translate: 0 100%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+
+/* ------------------------------------------------------------------ */
+/* Motion layer                                                        */
+/* ------------------------------------------------------------------ */
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+/* Film grain: one fixed SVG-noise layer, stepped so it shimmers without repainting the page. */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.14 0 0 0 0 0.1 0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  mix-blend-mode: multiply;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .grain {
+    animation: grain 0.9s steps(5) infinite;
+  }
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-6%, 4%); }
+  40% { transform: translate(5%, -7%); }
+  60% { transform: translate(-3%, 8%); }
+  80% { transform: translate(7%, 2%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Cursor */
+.has-cursor,
+.has-cursor a,
+.has-cursor button,
+.has-cursor summary,
+.has-cursor label {
+  cursor: none;
+}
+.has-cursor input,
+.has-cursor textarea,
+.has-cursor select {
+  cursor: auto;
+}
+.cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.cursor-body {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 0.55rem;
+  height: 0.55rem;
+  translate: -50% -50%;
+  border-radius: 999px;
+  background: var(--color-roast);
+  transition:
+    width 0.45s var(--ease-out-quint),
+    height 0.45s var(--ease-out-quint),
+    background-color 0.3s,
+    border-color 0.3s,
+    scale 0.2s;
+  border: 1px solid transparent;
+}
+.cursor[data-mode="link"] .cursor-body {
+  width: 2.6rem;
+  height: 2.6rem;
+  background: transparent;
+  border-color: var(--color-roast);
+}
+.cursor[data-mode="label"] .cursor-body {
+  width: 5.2rem;
+  height: 5.2rem;
+  background: var(--color-spring);
+}
+.cursor-label {
+  color: var(--color-paper);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.cursor[data-mode="label"] .cursor-label {
+  opacity: 1;
+  transition-delay: 0.12s;
+}
+.cursor.is-down .cursor-body {
+  scale: 0.82;
+}
+/* Over dark sections the dot inverts. */
+.cursor-on-dark .cursor-body {
+  background: var(--color-paper);
+}
+
+/* Split lines keep descenders visible inside their mask. */
+.split-line {
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+/* Links: underline draws in from the left. */
+.link {
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+  padding-bottom: 0.1em;
+  transition: background-size 0.5s var(--ease-out-quint);
+}
+.link:hover {
+  background-size: 0% 1px;
+  background-position: 100% 100%;
+  animation: underline-in 0.55s 0.25s var(--ease-out-quint) forwards;
+}
+@keyframes underline-in {
+  from { background-size: 0% 1px; background-position: 0 100%; }
+  to { background-size: 100% 1px; background-position: 0 100%; }
+}
+
+/* Buttons: press physics. */
+.btn {
+  transition:
+    background-color 0.25s var(--ease-out-quint),
+    color 0.25s var(--ease-out-quint),
+    border-color 0.25s var(--ease-out-quint),
+    scale 0.35s cubic-bezier(0.34, 1.8, 0.64, 1);
+}
+.btn:active {
+  scale: 0.96;
+  transition-duration: 0.08s;
+}
+
+/* Arrow that travels along an arc on hover (used inside CTAs). */
+.arc-arrow {
+  display: inline-grid;
+  width: 1.1em;
+  height: 1.1em;
+  overflow: hidden;
+}
+.arc-arrow > svg {
+  grid-area: 1 / 1;
+  transition: translate 0.55s var(--ease-out-quint), rotate 0.55s var(--ease-out-quint);
+}
+.arc-arrow > svg + svg {
+  translate: -120% 60%;
+  rotate: 25deg;
+}
+:is(a, button):hover > .arc-arrow > svg:first-child {
+  translate: 120% -60%;
+  rotate: -25deg;
+}
+:is(a, button):hover > .arc-arrow > svg + svg {
+  translate: 0 0;
+  rotate: 0deg;
+}
+
+/* Accordion: smooth height where supported. */
+:root {
+  interpolate-size: allow-keywords;
+}
+details::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size 0.5s var(--ease-out-quint),
+    content-visibility 0.5s allow-discrete;
+}
+details[open]::details-content {
+  block-size: auto;
+}
+
+/* Drawer: spring on open. */
+.cart-drawer {
+  transition-timing-function: cubic-bezier(0.32, 1.25, 0.5, 1);
+}
+
+/* Quantity change bump. */
+.bump {
+  animation: bump 0.35s cubic-bezier(0.34, 1.8, 0.64, 1);
+}
+@keyframes bump {
+  from { scale: 1.45; }
+}
+
+/* Floating dropdowns (language) animate in. */
+.pop {
+  transform-origin: top right;
+  transition:
+    opacity 0.3s var(--ease-out-quint),
+    scale 0.4s var(--ease-out-quint),
+    display 0.3s allow-discrete;
+}
+.pop[hidden] {
+  display: none;
+  opacity: 0;
+  scale: 0.94;
+}
+@starting-style {
+  .pop:not([hidden]) {
+    opacity: 0;
+    scale: 0.94;
+  }
+}
+
+/* Scenes: static layout by default, motion stage once the scene initialises. */
+[data-motion="on"] [data-static] {
+  display: none;
+}
+[data-motion="on"] [data-stage] {
+  display: block;
+}
+
+/* Steam: strokes draw upward and fade, on a loop. */
+.steam-path {
+  stroke-dasharray: 40 160;
+  stroke-dashoffset: 200;
+  animation: steam 3.2s linear infinite;
+}
+@keyframes steam {
+  0% { stroke-dashoffset: 200; opacity: 0; }
+  25% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+.ripple {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ripple 2.6s ease-out infinite;
+}
+@keyframes ripple {
+  from { transform: scale(0.2); opacity: 0.7; }
+  to { transform: scale(1); opacity: 0; }
+}
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--outline, rgb(243 237 227 / 0.4));
+}
+
+/* Product cards: a soft light follows the pointer and warms the panel's hue. */
+.card-light {
+  background: radial-gradient(60% 50% at var(--mx, 50%) var(--my, 30%), rgb(255 255 255 / 0.55), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out-quint);
+  mix-blend-mode: soft-light;
+}
+.product-card:hover .card-light {
+  opacity: 1;
+}
+.card-panel {
+  transition: filter 0.6s var(--ease-out-quint);
+}
+.product-card:hover .card-panel {
+  filter: saturate(1.25) hue-rotate(-6deg);
+}
+
+/* Why IZUMI: a grid by default; a horizontal pinned track once motion is on (desktop). */
+@media (min-width: 1024px) {
+  .why[data-motion="on"] .why-frame {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100svh;
+  }
+  .why[data-motion="on"] .why-frame > .wrap:first-child {
+    padding-top: 0;
+  }
+  .why[data-motion="on"] [data-track] {
+    display: flex;
+    width: max-content;
+    max-width: none;
+    gap: 2rem;
+    padding-bottom: 0;
+    padding-right: 20vw;
+  }
+  .why[data-motion="on"] [data-track] > li {
+    width: min(38rem, 60vw);
+    height: 56svh;
+    flex-shrink: 0;
+  }
+}
